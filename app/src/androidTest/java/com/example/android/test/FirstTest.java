@@ -8,6 +8,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
@@ -22,9 +23,10 @@ import static org.junit.Assert.assertThat;
 
 public class FirstTest {
 
-    @Rule
-    public ActivityTestRule<MainActivity> mActivityRule
-            = new ActivityTestRule<MainActivity>(MainActivity.class);
+
+//    @Rule
+//    public ActivityTestRule<MainActivity> mActivityRule
+//            = new ActivityTestRule<MainActivity>(MainActivity.class);
 
     private UiDevice mDevice;
 
@@ -40,54 +42,39 @@ public class FirstTest {
     }
 
     @Test
-    public void checkSettings() throws UiObjectNotFoundException {
+    public void startApp() throws UiObjectNotFoundException {
 
-        // Simulate a short press on the HOME button.
         mDevice.pressHome();
 
-        // We’re now in the home screen. Next, we want to simulate
-        // a user bringing up the All Apps screen.
-        // If you use the uiautomatorviewer tool to capture a snapshot
-        // of the Home screen, notice that the All Apps button’s
-        // content-description property has the value “Apps”. We can
-        // use this property to create a UiSelector to find the button.
+        UiObject2 allAppsButton = mDevice.findObject(By.res("com.google.android.apps.nexuslauncher:id/all_apps_handle"));
 
-        UiObject allAppsButton = mDevice.findObject(new UiSelector().description("Apps"));
+        allAppsButton.clickAndWait(Until.newWindow(), 3000);
+        UiObject2 yuotubeIcon = mDevice.findObject(By.desc("YouTube"));
 
-        // Simulate a click to bring up the All Apps screen.
-        allAppsButton.clickAndWaitForNewWindow();
-
-        // In the All Apps screen, the Settings app is located in
-        // the Apps tab. To simulate the user bringing up the Apps tab,
-        // we create a UiSelector to find a tab with the text
-        // label “Apps”.
-        UiObject appsTab = mDevice.findObject(new UiSelector().text("Apps"));
-
-        // Simulate a click to enter the Apps tab.
-        appsTab.click();
+        yuotubeIcon.click();
 
         // Next, in the apps tabs, we can simulate a user swiping until
         // they come to the Settings app icon. Since the container view
         // is scrollable, we can use a UiScrollable object.
-        UiScrollable appViews = new UiScrollable(
-                new UiSelector().scrollable(true));
-
-        // Set the swiping mode to horizontal (the default is vertical)
-        appViews.setAsHorizontalList();
-
-        // create a UiSelector to find the Settings app and simulate
-        // a user click to launch the app.
-        UiObject settingsApp = appViews
-                .getChildByText(new UiSelector()
-                                .className(android.widget.TextView.class.getName()),
-                        "Settings");
-        settingsApp.clickAndWaitForNewWindow();
-
-        // Validate that the package name is the expected one
-        UiObject settingsValidation = new UiObject(
-                new UiSelector()
-                        .packageName("com.android.settings"));
-        assertThat(settingsValidation.exists(), equalTo(true));
+//        UiScrollable appViews = new UiScrollable(
+//                new UiSelector().scrollable(true));
+//
+//        // Set the swiping mode to horizontal (the default is vertical)
+//        appViews.setAsHorizontalList();
+//
+//        // create a UiSelector to find the Settings app and simulate
+//        // a user click to launch the app.
+//        UiObject settingsApp = appViews
+//                .getChildByText(new UiSelector()
+//                                .className(android.widget.TextView.class.getName()),
+//                        "Settings");
+//        settingsApp.clickAndWaitForNewWindow();
+//
+//        // Validate that the package name is the expected one
+//        UiObject settingsValidation = new UiObject(
+//                new UiSelector()
+//                        .packageName("com.android.settings"));
+//        assertThat(settingsValidation.exists(), equalTo(true));
     }
 
     private String getLauncherPackageName() {
