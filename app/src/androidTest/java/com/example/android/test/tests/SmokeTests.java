@@ -1,4 +1,4 @@
-package com.example.android.test;
+package com.example.android.test.tests;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,6 +14,8 @@ import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
 import android.support.test.uiautomator.Until;
 
+import com.example.android.test.steps.SystemStep;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,38 +23,20 @@ import org.junit.Test;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class FirstTest {
+public class SmokeTests {
 
-
-//    @Rule
-//    public ActivityTestRule<MainActivity> mActivityRule
-//            = new ActivityTestRule<MainActivity>(MainActivity.class);
-
-    private UiDevice mDevice;
+    SystemStep systemStep = new SystemStep();
 
     @Before
-    public void setUp() {
-        // Initialize UiDevice instance
-
-        mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-        // Start from the home screen
-        mDevice.pressHome();
-
-        mDevice.wait(Until.hasObject(By.pkg(getLauncherPackageName()).depth(0)), 1000);
+    public void setUp() throws UiObjectNotFoundException {
+        systemStep.startApp();
     }
 
     @Test
-    public void startApp() throws UiObjectNotFoundException {
+    public void playVideo() throws UiObjectNotFoundException {
 
-        mDevice.pressHome();
 
-        UiObject2 allAppsButton = mDevice.findObject(By.res("com.google.android.apps.nexuslauncher:id/all_apps_handle"));
-
-        allAppsButton.clickAndWait(Until.newWindow(), 3000);
-        UiObject2 yuotubeIcon = mDevice.findObject(By.desc("YouTube"));
-
-        yuotubeIcon.click();
-
+      playVideo();
         // Next, in the apps tabs, we can simulate a user swiping until
         // they come to the Settings app icon. Since the container view
         // is scrollable, we can use a UiScrollable object.
@@ -77,14 +61,5 @@ public class FirstTest {
 //        assertThat(settingsValidation.exists(), equalTo(true));
     }
 
-    private String getLauncherPackageName() {
-        // Create launcher Intent
-        final Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
 
-        // Use PackageManager to get the launcher package name
-        PackageManager pm = InstrumentationRegistry.getContext().getPackageManager();
-        ResolveInfo resolveInfo = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        return resolveInfo.activityInfo.packageName;
-    }
 }
