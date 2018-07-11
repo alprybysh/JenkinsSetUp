@@ -28,6 +28,7 @@ public class SmokeTests {
 
     static SystemStep systemStep = new SystemStep(mDevice);
     static MainActivitySteps steps = new MainActivitySteps(mDevice);
+    
     TrendingSteps trendingSteps = new TrendingSteps(mDevice);
 
 
