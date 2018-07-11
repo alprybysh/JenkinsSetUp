@@ -1,42 +1,50 @@
 package com.example.android.test.tests;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.UiObject;
-import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
-import android.support.test.uiautomator.UiScrollable;
-import android.support.test.uiautomator.UiSelector;
-import android.support.test.uiautomator.Until;
 
+import com.example.android.test.steps.TrendingSteps;
+import com.example.android.test.steps.MainActivitySteps;
 import com.example.android.test.steps.SystemStep;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
-import static org.hamcrest.Matchers.equalTo;
+import java.io.IOException;
+
 import static org.junit.Assert.assertThat;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SmokeTests {
 
-    SystemStep systemStep = new SystemStep();
+    static UiDevice mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
-    @Before
-    public void setUp() throws UiObjectNotFoundException {
+    static SystemStep systemStep = new SystemStep(mDevice);
+    static MainActivitySteps steps = new MainActivitySteps(mDevice);
+    TrendingSteps trendingSteps = new TrendingSteps(mDevice);
+
+
+    @BeforeClass
+    public static void setUp() throws UiObjectNotFoundException {
+        InstrumentationRegistry.getInstrumentation().getUiAutomation()
+                .executeShellCommand("pm clear com.google.android.youtube");
         systemStep.startApp();
+        systemStep.dismissInitialDialog();
+
     }
 
     @Test
-    public void playVideo() throws UiObjectNotFoundException {
+    public void test1PlayVideo() {
+        steps.playFirstVideo();
 
 
-      playVideo();
         // Next, in the apps tabs, we can simulate a user swiping until
         // they come to the Settings app icon. Since the container view
         // is scrollable, we can use a UiScrollable object.
@@ -59,6 +67,18 @@ public class SmokeTests {
 //                new UiSelector()
 //                        .packageName("com.android.settings"));
 //        assertThat(settingsValidation.exists(), equalTo(true));
+    }
+
+    @Test
+    public void test2OpenTrending() {
+        steps.openTrending();
+        Assert.assertTrue(trendingSteps.isTrendingOpen());
+    }
+
+    @AfterClass
+    public static void tearDown() throws IOException {
+        InstrumentationRegistry.getInstrumentation().getUiAutomation()
+                .executeShellCommand("pm clear com.google.android.youtube");
     }
 
 
