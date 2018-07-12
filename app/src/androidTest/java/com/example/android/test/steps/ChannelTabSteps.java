@@ -5,6 +5,8 @@ import android.support.test.uiautomator.UiDevice;
 import com.example.android.test.views.ChannelTabViews;
 import com.example.android.test.views.MainActivityView;
 
+import java.io.IOException;
+
 public class ChannelTabSteps {
 
     private UiDevice mDevice;

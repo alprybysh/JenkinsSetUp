@@ -4,37 +4,37 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class RetryRule implements TestRule {
 
-    private int retryCount;
+    private AtomicInteger count;
 
-    public RetryRule(int retryCount) {
-        this.retryCount = retryCount;
+    public RetryRule(int count){
+        super();
+        this.count = new AtomicInteger(count);
     }
 
-    public Statement apply(Statement base, Description description) {
-        return statement(base, description);
-    }
-
-    private Statement statement(final Statement base, final Description description) {
+    @Override
+    public Statement apply(final Statement statement, final Description desc) {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                Throwable caughtThrowable = null;
-
-                // implement retry logic here
-                for (int i = 0; i < retryCount; i++) {
+                while (count.getAndDecrement() > 0) {
                     try {
-                        base.evaluate();
+                        statement.evaluate();
                         return;
-                    } catch (Throwable t) {
-                        caughtThrowable = t;
-                        //  System.out.println(": run " + (i+1) + " failed");
-                        System.err.println(description.getDisplayName() + ": run " + (i + 1) + " failed.");
+                    } catch (Throwable throwable) {
+                        if (count.get() > 0 && desc.getAnnotation(Retry.class)!= null) {
+                            System.out.println("!!!================================!!!");
+                            System.out.println(desc.getDisplayName() + "failed");
+                            System.out.println(count.toString() + " retries remain");
+                            System.out.println("!!!================================!!!");
+                        } else {
+                            throw throwable;
+                        }
                     }
                 }
-                System.err.println(description.getDisplayName() + ": giving up after " + retryCount + " failures.");
-                throw caughtThrowable;
             }
         };
     }
