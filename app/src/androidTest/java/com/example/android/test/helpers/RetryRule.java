@@ -1,4 +1,6 @@
-package com.example.android.test.steps;
+package com.example.android.test.helpers;
+
+import com.example.android.test.helpers.Retry;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;

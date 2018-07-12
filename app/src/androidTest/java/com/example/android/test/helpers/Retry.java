@@ -1,4 +1,4 @@
-package com.example.android.test.steps;
+package com.example.android.test.helpers;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
