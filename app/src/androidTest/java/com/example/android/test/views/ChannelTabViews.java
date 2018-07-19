@@ -4,6 +4,8 @@ import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject2;
 
+import java.io.IOException;
+
 public class ChannelTabViews {
 
     private static final String PACKAGE_NAME = "com.google.android.youtube:id/";
@@ -13,8 +15,9 @@ public class ChannelTabViews {
         this.mDevice = mDevice;
     }
 
-    public UiObject2 videoContainer() {
+    public UiObject2 videoContainer()  {
         return mDevice.findObject(By.res(PACKAGE_NAME + "channel_banner_container"));
+
     }
 
 }

@@ -24,14 +24,13 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertThat;
 @RunWith(AndroidJUnit4.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SmokeTests {
 
     static UiDevice mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
     static SystemStep systemStep = new SystemStep(mDevice);
     static MainActivitySteps steps = new MainActivitySteps(mDevice);
-
     TrendingSteps trendingSteps = new TrendingSteps(mDevice);
 
 
@@ -45,11 +44,11 @@ public class SmokeTests {
     }
 
     //Set retry count argument
-    @Rule
-    public RetryRule retryRule = new RetryRule(3);
+//    @Rule
+//    public RetryRule retryRule = new RetryRule(3);
 
     @Test
-    @Retry
+   // @Retry
     public void test1PlayVideo() {
         steps.playFirstVideo();
 
@@ -79,7 +78,7 @@ public class SmokeTests {
     }
 
     @Test
-    @Retry
+   // @Retry
     public void test2OpenTrending() {
         steps.openTrending();
         Assert.assertTrue(trendingSteps.isTrendingOpen());
