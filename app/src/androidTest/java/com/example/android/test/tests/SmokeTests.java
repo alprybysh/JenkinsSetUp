@@ -24,11 +24,10 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertThat;
 @RunWith(AndroidJUnit4.class)
-//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SmokeTests {
 
     static UiDevice mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-
     static SystemStep systemStep = new SystemStep(mDevice);
     static MainActivitySteps steps = new MainActivitySteps(mDevice);
     TrendingSteps trendingSteps = new TrendingSteps(mDevice);
@@ -43,42 +42,17 @@ public class SmokeTests {
 
     }
 
-    //Set retry count argument
-//    @Rule
-//    public RetryRule retryRule = new RetryRule(3);
+    @Rule
+    public RetryRule retryRule = new RetryRule(3);
 
     @Test
-   // @Retry
+    @Retry
     public void test1PlayVideo() {
         steps.playFirstVideo();
-
-
-        // Next, in the apps tabs, we can simulate a user swiping until
-        // they come to the Settings app icon. Since the container view
-        // is scrollable, we can use a UiScrollable object.
-//        UiScrollable appViews = new UiScrollable(
-//                new UiSelector().scrollable(true));
-//
-//        // Set the swiping mode to horizontal (the default is vertical)
-//        appViews.setAsHorizontalList();
-//
-//        // create a UiSelector to find the Settings app and simulate
-//        // a user click to launch the app.
-//        UiObject settingsApp = appViews
-//                .getChildByText(new UiSelector()
-//                                .className(android.widget.TextView.class.getName()),
-//                        "Settings");
-//        settingsApp.clickAndWaitForNewWindow();
-//
-//        // Validate that the package name is the expected one
-//        UiObject settingsValidation = new UiObject(
-//                new UiSelector()
-//                        .packageName("com.android.settings"));
-//        assertThat(settingsValidation.exists(), equalTo(true));
     }
 
     @Test
-   // @Retry
+    @Retry
     public void test2OpenTrending() {
         steps.openTrending();
         Assert.assertTrue(trendingSteps.isTrendingOpen());
